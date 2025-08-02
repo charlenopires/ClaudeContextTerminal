@@ -29,6 +29,119 @@ cd Goofy
 cargo build --release
 ```
 
+### Installing on macOS
+
+After building the project, you can install the executable globally:
+
+```bash
+# Build the release binary
+cargo build --release
+
+# Copy to a directory in your PATH (choose one option)
+# Option 1: Install to /usr/local/bin (requires sudo)
+sudo cp target/release/goofy-rs /usr/local/bin/goofy
+
+# Option 2: Install to ~/.local/bin (user directory)
+mkdir -p ~/.local/bin
+cp target/release/goofy-rs ~/.local/bin/goofy
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+
+# Option 3: Install using Homebrew (if you have a tap)
+# brew install your-tap/goofy-rs
+
+# Verify installation
+which goofy
+goofy --help
+```
+
+### Installing on Linux
+
+After building the project, you can install the executable globally:
+
+```bash
+# Build the release binary
+cargo build --release
+
+# Copy to a directory in your PATH (choose one option)
+# Option 1: Install to /usr/local/bin (requires sudo)
+sudo cp target/release/goofy-rs /usr/local/bin/goofy
+
+# Option 2: Install to ~/.local/bin (user directory)
+mkdir -p ~/.local/bin
+cp target/release/goofy-rs ~/.local/bin/goofy
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
+# Option 3: Install using a package manager (if available)
+# For Arch Linux (if you create an AUR package)
+# yay -S goofy-rs-git
+
+# For Ubuntu/Debian (if you create a .deb package)
+# sudo dpkg -i goofy-rs_*.deb
+
+# Verify installation
+which goofy
+goofy --help
+```
+
+### Installing on Windows
+
+After building the project, you can install the executable:
+
+```powershell
+# Build the release binary
+cargo build --release
+
+# Option 1: Copy to a directory in your PATH
+# Create a directory for the executable (if it doesn't exist)
+mkdir C:\Users\%USERNAME%\bin
+
+# Copy the executable
+copy target\release\goofy-rs.exe C:\Users\%USERNAME%\bin\goofy.exe
+
+# Add to PATH (run as Administrator or add via System Properties)
+setx PATH "%PATH%;C:\Users\%USERNAME%\bin"
+
+# Option 2: Install to a system directory (requires Administrator)
+copy target\release\goofy-rs.exe C:\Windows\System32\goofy.exe
+
+# Verify installation (restart PowerShell/CMD after adding to PATH)
+where goofy
+goofy --help
+```
+
+Alternatively, using Command Prompt:
+
+```cmd
+REM Build the release binary
+cargo build --release
+
+REM Copy to user directory
+mkdir "%USERPROFILE%\bin"
+copy target\release\goofy-rs.exe "%USERPROFILE%\bin\goofy.exe"
+
+REM Add to PATH
+setx PATH "%PATH%;%USERPROFILE%\bin"
+
+REM Verify installation
+where goofy
+goofy --help
+```
+
+Once installed on any platform, you can use `goofy` instead of the full path:
+
+```bash
+# Interactive mode
+goofy
+
+# Non-interactive mode
+goofy run "Explain Rust ownership"
+
+# With environment variables
+GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 goofy run "test"
+```
+
 ## Configuration
 
 ### Environment Variables
