@@ -1,0 +1,67 @@
+[package]
+name = "crush-rs"
+version = "0.1.0"
+edition = "2021"
+description = "A terminal-based AI coding assistant - Rust port of Charmbracelet's Crush"
+license = "MIT"
+
+[dependencies]
+# CLI Framework
+clap = { version = "4.4", features = ["derive"] }
+
+# TUI Framework
+ratatui = "0.25"
+crossterm = "0.27"
+
+# Async Runtime
+tokio = { version = "1.0", features = ["full"] }
+
+# HTTP Client for AI APIs
+reqwest = { version = "0.11", features = ["json"] }
+async-openai = "0.18"
+
+# JSON Handling
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Configuration
+dotenvy = "0.15"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# File System
+walkdir = "2.4"
+notify = "6.1"
+
+# Database
+rusqlite = { version = "0.30", features = ["bundled"] }
+
+# Text Processing
+pulldown-cmark = "0.10"
+syntect = "5.1"
+html2md = "0.2"
+
+# String Matching
+fuzzy-matcher = "0.3"
+
+# Web Scraping
+scraper = "0.18"
+
+# Error Handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Utilities
+uuid = { version = "1.6", features = ["v4"] }
+chrono = { version = "0.4", features = ["serde"] }
+async-trait = "0.1"
+dirs = "5.0"
+futures = "0.3"
+rand = "0.8"
+regex = "1.10"
+tempfile = "3.8"
+
+# Markdown rendering
+comrak = "0.20"

@@ -1,0 +1,80 @@
+{
+  "llm": {
+    "providers": {
+      "openai": {
+        "api_key": "sk-your-openai-api-key-here",
+        "base_url": "https://api.openai.com/v1",
+        "models": [
+          "gpt-4",
+          "gpt-4-turbo",
+          "gpt-3.5-turbo"
+        ],
+        "default_model": "gpt-4"
+      },
+      "anthropic": {
+        "api_key": "sk-ant-your-anthropic-api-key-here",
+        "base_url": "https://api.anthropic.com",
+        "models": [
+          "claude-3-opus-20240229",
+          "claude-3-sonnet-20240229",
+          "claude-3-haiku-20240307"
+        ],
+        "default_model": "claude-3-sonnet-20240229"
+      },
+      "ollama": {
+        "base_url": "http://localhost:11434",
+        "models": [
+          "llama3.2",
+          "llama3.1",
+          "mistral",
+          "codellama",
+          "phi3",
+          "gemma2"
+        ],
+        "default_model": "llama3.2"
+      }
+    },
+    "default_provider": "openai",
+    "max_tokens": 4096,
+    "temperature": 0.7,
+    "stream": true
+  },
+  "ui": {
+    "theme": "dark",
+    "show_timestamps": true,
+    "auto_save": true,
+    "max_history": 1000
+  },
+  "workspace": {
+    "ignore_patterns": [
+      "node_modules",
+      ".git",
+      "target",
+      "dist",
+      ".next",
+      ".nuxt",
+      "__pycache__",
+      "*.pyc",
+      ".DS_Store"
+    ],
+    "file_extensions": [
+      ".rs",
+      ".go",
+      ".py",
+      ".js",
+      ".ts",
+      ".tsx",
+      ".jsx",
+      ".md",
+      ".json",
+      ".yaml",
+      ".yml",
+      ".toml"
+    ]
+  },
+  "database": {
+    "path": "~/.crush/sessions.db",
+    "auto_backup": true,
+    "max_sessions": 1000
+  }
+}
