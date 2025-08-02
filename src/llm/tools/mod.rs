@@ -18,6 +18,11 @@ pub mod rg;
 pub mod glob;
 pub mod ls;
 pub mod safe;
+pub mod download;
+pub mod diagnostics;
+pub mod fetch;
+pub mod view;
+pub mod write;
 
 pub use bash::BashTool;
 pub use file::FileTool;
@@ -28,6 +33,11 @@ pub use rg::RgTool;
 pub use glob::GlobTool;
 pub use ls::LsTool;
 pub use safe::SafeValidator;
+pub use download::DownloadTool;
+pub use diagnostics::DiagnosticsTool;
+pub use fetch::FetchTool;
+pub use view::ViewTool;
+pub use write::WriteTool;
 
 // Re-export for easier access in tests (types defined below)
 
@@ -145,6 +155,11 @@ impl ToolManager {
         self.register_tool(Box::new(RgTool::new()));
         self.register_tool(Box::new(GlobTool::new()));
         self.register_tool(Box::new(LsTool::new()));
+        self.register_tool(Box::new(DownloadTool::new()));
+        self.register_tool(Box::new(DiagnosticsTool::new(None))); // No LSP manager by default
+        self.register_tool(Box::new(FetchTool::new()));
+        self.register_tool(Box::new(ViewTool::new()));
+        self.register_tool(Box::new(WriteTool::new()));
     }
     
     /// Register a tool

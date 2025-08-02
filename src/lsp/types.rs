@@ -1,11 +1,12 @@
 //! LSP types and data structures
 
 use serde::{Deserialize, Serialize};
+use schemars::JsonSchema;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
 /// LSP client configuration for a specific language
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct LspClientConfig {
     /// Command to start the language server
     pub command: String,
@@ -27,7 +28,7 @@ fn default_workspace() -> bool {
 }
 
 /// LSP configuration for all languages
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, JsonSchema)]
 pub struct LspConfig {
     /// Language server configurations by language ID
     #[serde(default)]
@@ -38,7 +39,7 @@ pub struct LspConfig {
 }
 
 /// Global LSP settings
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct LspSettings {
     /// Whether LSP is enabled globally
     #[serde(default = "default_enabled")]

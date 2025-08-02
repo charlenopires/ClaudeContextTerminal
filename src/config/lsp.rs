@@ -1,2 +1,2 @@
 // Re-export the LSP types from the main lsp module
-pub use crate::lsp::types::{LspConfig, LspClientConfig, LspSettings};
+pub use crate::lsp::types::LspConfig;

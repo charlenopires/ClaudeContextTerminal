@@ -1,5 +1,6 @@
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
+use schemars::JsonSchema;
 use std::{path::PathBuf, collections::HashMap};
 use tracing::debug;
 
@@ -7,7 +8,7 @@ pub mod lsp;
 use self::lsp::LspConfig;
 
 /// Application configuration
-#[derive(Clone, Debug, Serialize, Deserialize, Default)]
+#[derive(Clone, Debug, Serialize, Deserialize, Default, JsonSchema)]
 pub struct Config {
     /// Current working directory
     pub cwd: PathBuf,

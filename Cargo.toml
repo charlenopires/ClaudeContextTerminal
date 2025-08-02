@@ -34,7 +34,6 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 # File System
 walkdir = "2.4"
-notify = "6.1"
 
 # Database
 rusqlite = { version = "0.30", features = ["bundled"] }
@@ -112,6 +111,9 @@ dunce = "1.0"
 # Log tailing
 notify = "6.1"
 linemux = "0.2"
+jsonschema = "0.18"
+humantime = "2.1"
+serde_yaml = "0.9"
 
 # JSON Schema generation
 schemars = "0.8"

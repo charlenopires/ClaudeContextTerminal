@@ -119,7 +119,7 @@ impl LogsCommand {
 
     /// Get the log file path from configuration
     fn get_log_file_path(&self, config: &Config) -> Result<PathBuf> {
-        let log_dir = config.data_dir().join("logs");
+        let log_dir = config.data_dir.join("logs");
         Ok(log_dir.join("goofy.log"))
     }
 
@@ -219,20 +219,20 @@ impl LogsCommand {
 
     /// Read the last N lines from a file
     fn read_tail_lines(&self, mut file: File) -> Result<Vec<String>> {
-        let mut lines = Vec::new();
         let reader = BufReader::new(&mut file);
         
         let all_lines: Vec<String> = reader.lines()
             .collect::<std::io::Result<Vec<_>>>()
             .context("Failed to read lines from log file")?;
 
-        if all_lines.len() <= self.tail {
-            lines = all_lines;
+        let lines = if all_lines.len() <= self.tail {
+            all_lines
         } else {
-            lines = all_lines.into_iter()
-                .skip(all_lines.len() - self.tail)
-                .collect();
-        }
+            let skip_count = all_lines.len() - self.tail;
+            all_lines.into_iter()
+                .skip(skip_count)
+                .collect()
+        };
 
         Ok(lines)
     }
