@@ -96,3 +96,6 @@ venv/
 # Claude configuration
 .claude
 CLAUDE.md
+
+# Reference samples
+samples/
