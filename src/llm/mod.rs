@@ -10,6 +10,7 @@ pub mod openai;
 pub mod anthropic;
 pub mod ollama;
 pub mod errors;
+pub mod tools;
 
 pub use provider::*;
 pub use types::*;

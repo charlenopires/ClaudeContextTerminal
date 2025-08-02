@@ -1,5 +1,5 @@
 [package]
-name = "goofy-rs"
+name = "goofy"
 version = "0.1.0"
 edition = "2021"
 description = "A terminal-based AI coding assistant - Rust port of Charmbracelet's Crush"
@@ -65,3 +65,4 @@ tempfile = "3.8"
 
 # Markdown rendering
 comrak = "0.20"
+lsp-types = "0.97.0"

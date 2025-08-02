@@ -3,8 +3,11 @@ use serde::{Deserialize, Serialize};
 use std::{path::PathBuf, collections::HashMap};
 use tracing::debug;
 
+pub mod lsp;
+use self::lsp::LspConfig;
+
 /// Application configuration
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, Default)]
 pub struct Config {
     /// Current working directory
     pub cwd: PathBuf,
@@ -44,26 +47,10 @@ pub struct Config {
     
     /// System message for conversations
     pub system_message: Option<String>,
-}
 
-impl Default for Config {
-    fn default() -> Self {
-        Self {
-            cwd: std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")),
-            data_dir: PathBuf::from("./data"),
-            provider: "openai".to_string(),
-            api_key: None,
-            base_url: None,
-            model: "gpt-4".to_string(),
-            max_tokens: Some(4096),
-            temperature: Some(0.7),
-            top_p: None,
-            stream: true,
-            extra_headers: HashMap::new(),
-            extra_body: HashMap::new(),
-            system_message: None,
-        }
-    }
+    /// LSP configuration
+    #[serde(default)]
+    pub lsp: LspConfig,
 }
 
 impl Config {

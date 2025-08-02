@@ -7,6 +7,7 @@ use chrono::{DateTime, Utc};
 use serde_json;
 
 use crate::llm::{Message, TokenUsage};
+// use super::queries::{SessionQueries, MessageQueries}; // Complex type system needs reconciliation
 
 /// Database manager for session persistence
 pub struct Database {
@@ -23,6 +24,15 @@ impl Database {
         
         Ok(db)
     }
+
+    // Note: Type-safe queries temporarily disabled until type system is reconciled
+    // pub fn sessions(&self) -> SessionQueries<'_> {
+    //     SessionQueries::new(&self.conn)
+    // }
+
+    // pub fn messages(&self) -> MessageQueries<'_> {
+    //     MessageQueries::new(&self.conn)
+    // }
     
     /// Create the necessary database tables
     async fn create_tables(&self) -> Result<()> {

@@ -11,6 +11,7 @@ mod session;
 mod tui;
 mod llm;
 mod utils;
+mod permission;
 
 use cli::Cli;
 

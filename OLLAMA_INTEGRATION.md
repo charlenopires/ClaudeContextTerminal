@@ -38,14 +38,14 @@ This document describes the Ollama integration added to the Goofy-RS application
 
 ```bash
 # Using environment variables
-GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy-rs run "Explain Rust ownership"
+GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy run "Explain Rust ownership"
 
 # Using configuration file
 # Edit goofy.json to set default_provider: "ollama"
-./target/release/goofy-rs run "Generate a binary search function"
+./target/release/goofy run "Generate a binary search function"
 
 # Interactive mode with Ollama
-GOOFY_PROVIDER=ollama ./target/release/goofy-rs
+GOOFY_PROVIDER=ollama ./target/release/goofy
 ```
 
 ### Configuration Examples
@@ -157,7 +157,7 @@ Run tests: `cargo test ollama`
 Enable debug logging to see detailed request/response information:
 
 ```bash
-RUST_LOG=debug GOOFY_PROVIDER=ollama ./target/release/goofy-rs run "test"
+RUST_LOG=debug GOOFY_PROVIDER=ollama ./target/release/goofy run "test"
 ```
 
 ## Future Enhancements
