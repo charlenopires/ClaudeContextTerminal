@@ -39,16 +39,16 @@ cargo build --release
 
 # Copy to a directory in your PATH (choose one option)
 # Option 1: Install to /usr/local/bin (requires sudo)
-sudo cp target/release/goofy-rs /usr/local/bin/goofy
+sudo cp target/release/goofy /usr/local/bin/goofy
 
 # Option 2: Install to ~/.local/bin (user directory)
 mkdir -p ~/.local/bin
-cp target/release/goofy-rs ~/.local/bin/goofy
+cp target/release/goofy ~/.local/bin/goofy
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 
 # Option 3: Install using Homebrew (if you have a tap)
-# brew install your-tap/goofy-rs
+# brew install your-tap/goofy
 
 # Verify installation
 which goofy
@@ -65,20 +65,20 @@ cargo build --release
 
 # Copy to a directory in your PATH (choose one option)
 # Option 1: Install to /usr/local/bin (requires sudo)
-sudo cp target/release/goofy-rs /usr/local/bin/goofy
+sudo cp target/release/goofy /usr/local/bin/goofy
 
 # Option 2: Install to ~/.local/bin (user directory)
 mkdir -p ~/.local/bin
-cp target/release/goofy-rs ~/.local/bin/goofy
+cp target/release/goofy ~/.local/bin/goofy
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 
 # Option 3: Install using a package manager (if available)
 # For Arch Linux (if you create an AUR package)
-# yay -S goofy-rs-git
+# yay -S goofy-git
 
 # For Ubuntu/Debian (if you create a .deb package)
-# sudo dpkg -i goofy-rs_*.deb
+# sudo dpkg -i goofy_*.deb
 
 # Verify installation
 which goofy
@@ -98,13 +98,13 @@ cargo build --release
 mkdir C:\Users\%USERNAME%\bin
 
 # Copy the executable
-copy target\release\goofy-rs.exe C:\Users\%USERNAME%\bin\goofy.exe
+copy target\release\goofy.exe C:\Users\%USERNAME%\bin\goofy.exe
 
 # Add to PATH (run as Administrator or add via System Properties)
 setx PATH "%PATH%;C:\Users\%USERNAME%\bin"
 
 # Option 2: Install to a system directory (requires Administrator)
-copy target\release\goofy-rs.exe C:\Windows\System32\goofy.exe
+copy target\release\goofy.exe C:\Windows\System32\goofy.exe
 
 # Verify installation (restart PowerShell/CMD after adding to PATH)
 where goofy
@@ -119,7 +119,7 @@ cargo build --release
 
 REM Copy to user directory
 mkdir "%USERPROFILE%\bin"
-copy target\release\goofy-rs.exe "%USERPROFILE%\bin\goofy.exe"
+copy target\release\goofy.exe "%USERPROFILE%\bin\goofy.exe"
 
 REM Add to PATH
 setx PATH "%PATH%;%USERPROFILE%\bin"
@@ -175,7 +175,7 @@ cp goofy.example.json goofy.json
 Start the TUI interface:
 
 ```bash
-./target/release/goofy-rs
+./target/release/goofy
 ```
 
 ### Non-Interactive Mode
@@ -184,16 +184,16 @@ Run single prompts:
 
 ```bash
 # Direct prompt
-./target/release/goofy-rs run "Explain Rust ownership"
+./target/release/goofy run "Explain Rust ownership"
 
 # From stdin
-echo "Generate a binary search function in Rust" | ./target/release/goofy-rs run
+echo "Generate a binary search function in Rust" | ./target/release/goofy run
 
 # Quiet mode (no spinner)
-./target/release/goofy-rs run --quiet "Review this code"
+./target/release/goofy run --quiet "Review this code"
 
 # Using Ollama (local models)
-GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy-rs run "Explain closures in Rust"
+GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy run "Explain closures in Rust"
 ```
 
 ### Options
@@ -234,13 +234,13 @@ cargo test
 ### Debug Logging
 
 ```bash
-RUST_LOG=debug ./target/release/goofy-rs run "test prompt"
+RUST_LOG=debug ./target/release/goofy run "test prompt"
 ```
 
 ### Profiling
 
 ```bash
-GOOFY_PROFILE=true ./target/release/goofy-rs
+GOOFY_PROFILE=true ./target/release/goofy
 # Profile server runs on http://localhost:6060
 ```
 
@@ -289,7 +289,7 @@ echo $OPENAI_API_KEY
 echo $ANTHROPIC_API_KEY
 
 # Test with debug logging
-RUST_LOG=debug ./target/release/goofy-rs run "test"
+RUST_LOG=debug ./target/release/goofy run "test"
 ```
 
 ### Ollama Issues
@@ -304,7 +304,7 @@ curl http://localhost:11434/api/tags
 ollama pull llama3.2
 
 # Test Ollama integration
-GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy-rs run "Hello"
+GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy run "Hello"
 ```
 
 ### Build Issues
@@ -322,5 +322,5 @@ Reset session database:
 
 ```bash
 rm ~/.goofy/sessions.db
-./target/release/goofy-rs run "test"  # Recreates database
+./target/release/goofy run "test"  # Recreates database
 ```

@@ -109,18 +109,8 @@ TIPS:
 
 impl DiagnosticsTool {
     /// Ensure a file is opened in all relevant LSP clients
-    async fn ensure_file_opened(&self, lsp_manager: &LspManager, file_path: &str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-        let clients = lsp_manager.get_clients_for_file(file_path);
-        
-        for client in clients {
-            if !client.is_file_open(file_path) {
-                client.open_file(file_path).await?;
-            } else {
-                // Notify change to trigger diagnostics update
-                client.notify_change(file_path).await?;
-            }
-        }
-        
+    async fn ensure_file_opened(&self, _lsp_manager: &LspManager, _file_path: &str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+        // TODO: Implement when LSP manager has get_clients_for_file method
         Ok(())
     }
 

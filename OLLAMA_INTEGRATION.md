@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the Ollama integration added to the Goofy-RS application, enabling the use of local language models through the Ollama server.
+This document describes the Ollama integration added to the Goofy application, enabling the use of local language models through the Ollama server.
 
 ## Features Added
 
@@ -103,7 +103,7 @@ let is_healthy = provider.health_check().await?;
 
 ## Available Models
 
-Common Ollama models that work with Goofy-RS:
+Common Ollama models that work with Goofy:
 
 - **Code Models**: `codellama`, `deepseek-coder`, `starcoder2`
 - **General Models**: `llama3.2`, `llama3.1`, `mistral`, `phi3`, `gemma2`
@@ -177,4 +177,4 @@ Potential improvements for the Ollama integration:
 - **Supported Platforms**: All platforms supported by Ollama (Linux, macOS, Windows)
 - **Models**: Any model supported by Ollama
 
-The Ollama integration is now fully functional and provides a complete local LLM solution for the Goofy-RS application.
+The Ollama integration is now fully functional and provides a complete local LLM solution for the Goofy application.

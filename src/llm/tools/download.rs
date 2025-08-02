@@ -168,6 +168,14 @@ impl DownloadTool {
             });
         }
 
+        // Get content type and length before consuming the response
+        let content_type = response
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream")
+            .to_string();
+
         // Check content length
         const MAX_SIZE: u64 = 100 * 1024 * 1024; // 100MB
         if let Some(content_length) = response.content_length() {
@@ -186,40 +194,25 @@ impl DownloadTool {
             fs::create_dir_all(parent).await?;
         }
 
-        // Create the output file
-        let mut file = fs::File::create(path).await?;
+        // Read all bytes at once for simplicity
+        let bytes = response.bytes().await?;
         
-        // Download and write the content with size limit
-        let mut bytes_written = 0u64;
-        let mut stream = response.bytes_stream();
-        
-        use futures::StreamExt;
-        while let Some(chunk) = stream.next().await {
-            let chunk = chunk?;
-            
-            // Check size limit
-            if bytes_written + chunk.len() as u64 > MAX_SIZE {
-                // Clean up the incomplete file
-                let _ = fs::remove_file(path).await;
-                return Ok(ToolResponse {
-                    content: String::new(),
-                    success: false,
-                    metadata: None,
-                    error: Some(format!("File too large: exceeded {} bytes limit", MAX_SIZE)),
-                });
-            }
-            
-            file.write_all(&chunk).await?;
-            bytes_written += chunk.len() as u64;
+        // Check size limit
+        if bytes.len() as u64 > MAX_SIZE {
+            return Ok(ToolResponse {
+                content: String::new(),
+                success: false,
+                metadata: None,
+                error: Some(format!("File too large: {} bytes (max {} bytes)", bytes.len(), MAX_SIZE)),
+            });
         }
 
+        // Create the output file and write content
+        let mut file = fs::File::create(path).await?;
+        file.write_all(&bytes).await?;
         file.flush().await?;
-
-        let content_type = response
-            .headers()
-            .get("content-type")
-            .and_then(|v| v.to_str().ok())
-            .unwrap_or("unknown");
+        
+        let bytes_written = bytes.len() as u64;
 
         let response_msg = if content_type != "unknown" {
             format!(

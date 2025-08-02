@@ -166,7 +166,7 @@ impl LogsCommand {
         let (tx, mut rx) = tokio::sync::mpsc::channel(100);
         
         let log_file_clone = log_file.clone();
-        let _watcher = recommended_watcher(move |res| {
+        let mut _watcher = recommended_watcher(move |res: notify::Result<notify::Event>| {
             if let Ok(event) = res {
                 if event.paths.iter().any(|p| p == &log_file_clone) {
                     let _ = tx.try_send(());

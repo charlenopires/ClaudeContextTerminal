@@ -171,11 +171,13 @@ impl FetchTool {
             }
         }
 
+        // Get content type before taking bytes
         let content_type = response
             .headers()
             .get("content-type")
             .and_then(|v| v.to_str().ok())
-            .unwrap_or("unknown");
+            .unwrap_or("unknown")
+            .to_string();
 
         // Read the response body
         let bytes = response.bytes().await?;
@@ -194,13 +196,15 @@ impl FetchTool {
             "Response content is not valid UTF-8"
         })?;
 
+        let original_content_len = content.len();
+
         // Format the content based on the requested format
         let formatted_content = match format {
             "text" => {
                 if content_type.contains("text/html") {
                     self.extract_text_from_html(&content)?
                 } else {
-                    content
+                    content.clone()
                 }
             }
             "markdown" => {
@@ -216,10 +220,10 @@ impl FetchTool {
                     // Extract body content from HTML
                     self.extract_body_from_html(&content)?
                 } else {
-                    content
+                    content.clone()
                 }
             }
-            _ => content,
+            _ => content.clone(),
         };
 
         // Truncate if too large for display
@@ -239,7 +243,7 @@ impl FetchTool {
             "format": format,
             "content_type": content_type,
             "content_length": bytes.len(),
-            "truncated": final_content.len() != content.len(),
+            "truncated": final_content.len() != original_content_len,
         });
 
         Ok(ToolResponse {

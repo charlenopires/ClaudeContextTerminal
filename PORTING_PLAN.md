@@ -1,6 +1,6 @@
-# Goofy-RS Porting Plan
+# Goofy Porting Plan
 
-This document outlines the complete plan for porting Charmbracelet's Crush (Go) to Goofy-RS (Rust).
+This document outlines the complete plan for porting Charmbracelet's Crush (Go) to Goofy (Rust).
 
 ## Current Status: ~30% Complete
 

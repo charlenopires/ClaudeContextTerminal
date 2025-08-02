@@ -141,43 +141,41 @@ impl SchemaCommand {
                 .with_context(|| format!("Failed to parse JSON config: {}", config_file.display()))?
         };
 
-        // Get schema
-        let schema_value = if let Some(schema_path) = schema_file {
+        // Try to deserialize as Config directly for validation
+        match serde_json::from_value::<Config>(config_value.clone()) {
+            Ok(_) => {
+                println!("✅ Configuration is valid and can be loaded successfully!");
+            }
+            Err(e) => {
+                println!("❌ Configuration validation failed: {}", e);
+                return Err(anyhow::anyhow!("Configuration validation failed: {}", e));
+            }
+        }
+
+        // If schema file is provided, try to use jsonschema for additional validation
+        if let Some(schema_path) = schema_file {
             let schema_content = fs::read_to_string(schema_path)
                 .with_context(|| format!("Failed to read schema file: {}", schema_path.display()))?;
-            serde_json::from_str(&schema_content)
-                .with_context(|| format!("Failed to parse schema file: {}", schema_path.display()))?
-        } else {
-            // Generate default schema
-            let schema = schema_for!(Config);
-            serde_json::to_value(schema)?
-        };
-
-        // Validate using jsonschema
-        let compiled_schema = jsonschema::JSONSchema::compile(&schema_value)
-            .context("Failed to compile JSON schema")?;
-
-        match compiled_schema.validate(&config_value) {
-            Ok(()) => {
-                println!("✅ Configuration is valid!");
-                
-                // Additional validation: try to deserialize as Config
-                match serde_json::from_value::<Config>(config_value) {
-                    Ok(_) => {
-                        println!("✅ Configuration can be loaded successfully!");
-                    }
-                    Err(e) => {
-                        println!("⚠️  Configuration is schema-valid but cannot be loaded: {}", e);
-                        println!("This might indicate missing required values or type mismatches.");
+            let schema_value: Value = serde_json::from_str(&schema_content)
+                .with_context(|| format!("Failed to parse schema file: {}", schema_path.display()))?;
+            
+            match jsonschema::JSONSchema::compile(&schema_value) {
+                Ok(compiled_schema) => {
+                    match compiled_schema.validate(&config_value) {
+                        Ok(()) => {
+                            println!("✅ Configuration is also valid against provided schema!");
+                        }
+                        Err(errors) => {
+                            println!("⚠️  Configuration failed schema validation:");
+                            for error in errors {
+                                println!("  - {}: {}", error.instance_path, error);
+                            }
+                        }
                     }
                 }
-            }
-            Err(errors) => {
-                println!("❌ Configuration validation failed:");
-                for error in errors {
-                    println!("  - {}: {}", error.instance_path, error);
+                Err(e) => {
+                    println!("⚠️  Could not compile provided schema: {}", e);
                 }
-                return Err(anyhow::anyhow!("Configuration validation failed"));
             }
         }
 
