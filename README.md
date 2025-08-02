@@ -1,4 +1,4 @@
-# Goofy-RS
+# Goofy
 
 A Rust port of [Charmbracelet's Crush](https://github.com/charmbracelet/crush) - a terminal-based AI coding assistant.
 
