@@ -9,6 +9,7 @@ use crate::llm::{
     openai::OpenAIProvider,
     anthropic::AnthropicProvider,
     ollama::OllamaProvider,
+    azure::AzureProvider,
 };
 
 /// Trait for LLM providers
@@ -52,6 +53,10 @@ impl ProviderFactory {
                 let provider = OllamaProvider::new(config)?;
                 Ok(Box::new(provider))
             }
+            "azure" => {
+                let provider = AzureProvider::from_config(config)?;
+                Ok(Box::new(provider))
+            }
             _ => Err(LlmError::ConfigError(format!(
                 "Unsupported provider type: {}",
                 config.provider_type
@@ -61,7 +66,7 @@ impl ProviderFactory {
     
     /// Get available provider types
     pub fn available_providers() -> Vec<&'static str> {
-        vec!["openai", "anthropic", "ollama"]
+        vec!["openai", "anthropic", "ollama", "azure"]
     }
 }
 

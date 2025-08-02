@@ -51,6 +51,12 @@ pub struct Config {
     /// LSP configuration
     #[serde(default)]
     pub lsp: LspConfig,
+    
+    /// Enable YOLO mode (disable permission checks)
+    pub yolo_mode: Option<bool>,
+    
+    /// Read-only mode (disable write/execute operations)
+    pub read_only: Option<bool>,
 }
 
 impl Config {
@@ -143,6 +149,14 @@ impl Config {
         
         if let Ok(system_message) = std::env::var("GOOFY_SYSTEM_MESSAGE") {
             self.system_message = Some(system_message);
+        }
+        
+        if let Ok(yolo_str) = std::env::var("GOOFY_YOLO") {
+            self.yolo_mode = Some(yolo_str.to_lowercase() == "true");
+        }
+        
+        if let Ok(readonly_str) = std::env::var("GOOFY_READ_ONLY") {
+            self.read_only = Some(readonly_str.to_lowercase() == "true");
         }
     }
     

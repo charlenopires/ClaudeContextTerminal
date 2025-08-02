@@ -6,13 +6,14 @@ use tokio::sync::mpsc;
 use tracing::{debug, error, info};
 
 use crate::{
-    llm::{LlmProvider, ChatRequest, ProviderResponse, Message, MessageRole},
+    llm::{LlmProvider, ChatRequest, ProviderResponse, Message, MessageRole, tools::ToolManager},
     app::AppEvent,
 };
 
 /// An AI agent that manages conversations with an LLM provider
 pub struct Agent {
     provider: Arc<dyn LlmProvider>,
+    tool_manager: Arc<ToolManager>,
     event_tx: mpsc::UnboundedSender<AppEvent>,
     session_id: String,
 }
@@ -21,11 +22,13 @@ impl Agent {
     /// Create a new agent
     pub fn new(
         provider: Arc<dyn LlmProvider>,
+        tool_manager: Arc<ToolManager>,
         event_tx: mpsc::UnboundedSender<AppEvent>,
         session_id: String,
     ) -> Self {
         Self {
             provider,
+            tool_manager,
             event_tx,
             session_id,
         }
@@ -41,7 +44,7 @@ impl Agent {
         
         let request = ChatRequest {
             messages,
-            tools: Vec::new(), // TODO: Load tools from config
+            tools: self.tool_manager.get_tool_definitions(),
             system_message,
             max_tokens: None,
             temperature: None,
@@ -88,7 +91,7 @@ impl Agent {
         
         let request = ChatRequest {
             messages,
-            tools: Vec::new(), // TODO: Load tools from config
+            tools: self.tool_manager.get_tool_definitions(),
             system_message,
             max_tokens: None,
             temperature: None,
@@ -160,6 +163,64 @@ impl Agent {
         });
         
         Ok(rx)
+    }
+    
+    /// Handle tool calls from LLM response
+    pub async fn handle_tool_calls(&self, tool_calls: Vec<crate::llm::types::ToolCall>) -> Result<Vec<Message>> {
+        let mut tool_results = Vec::new();
+        
+        for tool_call in tool_calls {
+            debug!("Executing tool: {} with id: {}", tool_call.name, tool_call.id);
+            
+            // Convert JSON arguments to HashMap
+            let parameters = if let serde_json::Value::Object(map) = tool_call.arguments {
+                map.into_iter()
+                    .map(|(k, v)| (k, v))
+                    .collect()
+            } else {
+                std::collections::HashMap::new()
+            };
+            
+            // Execute the tool
+            match self.tool_manager.execute_tool(&tool_call.name, parameters).await {
+                Ok(response) => {
+                    debug!("Tool '{}' executed successfully", tool_call.name);
+                    
+                    // Create tool result message
+                    let tool_result = Message {
+                        id: uuid::Uuid::new_v4().to_string(),
+                        role: MessageRole::Tool,
+                        content: vec![crate::llm::types::ContentBlock::ToolResult {
+                            tool_call_id: tool_call.id,
+                            content: response.content,
+                        }],
+                        timestamp: chrono::Utc::now(),
+                        metadata: std::collections::HashMap::new(),
+                    };
+                    
+                    tool_results.push(tool_result);
+                }
+                Err(e) => {
+                    error!("Tool '{}' execution failed: {}", tool_call.name, e);
+                    
+                    // Create error result message
+                    let error_result = Message {
+                        id: uuid::Uuid::new_v4().to_string(),
+                        role: MessageRole::Tool,
+                        content: vec![crate::llm::types::ContentBlock::ToolResult {
+                            tool_call_id: tool_call.id,
+                            content: format!("Error executing tool: {}", e),
+                        }],
+                        timestamp: chrono::Utc::now(),
+                        metadata: std::collections::HashMap::new(),
+                    };
+                    
+                    tool_results.push(error_result);
+                }
+            }
+        }
+        
+        Ok(tool_results)
     }
     
     /// Get the provider name

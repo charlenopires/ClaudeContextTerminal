@@ -10,6 +10,8 @@ mod app;
 mod session;
 mod tui;
 mod llm;
+mod lsp;
+mod mcp;
 mod utils;
 mod permission;
 

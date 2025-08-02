@@ -8,6 +8,7 @@ pub mod provider;
 pub mod types;
 pub mod openai;
 pub mod anthropic;
+pub mod azure;
 pub mod ollama;
 pub mod errors;
 pub mod tools;

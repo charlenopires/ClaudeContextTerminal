@@ -15,6 +15,7 @@ crossterm = "0.27"
 
 # Async Runtime
 tokio = { version = "1.0", features = ["full"] }
+tokio-stream = "0.1"
 
 # HTTP Client for AI APIs
 reqwest = { version = "0.11", features = ["json"] }
@@ -66,3 +67,51 @@ tempfile = "3.8"
 # Markdown rendering
 comrak = "0.20"
 lsp-types = "0.97.0"
+
+# Phase 3: Enhanced TUI Dependencies
+# Enhanced TUI widgets
+tui-textarea = "0.4"
+tui-tree-widget = "0.17"
+
+# Image processing
+image = "0.25"
+
+# Animation support
+easing = "0.0.5"
+
+# Clipboard access
+arboard = "3.3"
+
+# Terminal capabilities
+terminal_size = "0.3"
+
+# Text utilities
+unicode-segmentation = "1.10"
+unicode-width = "0.1"
+
+# Color support  
+colorful = "0.3"
+
+# Phase 4: CLI & Utilities Dependencies
+# Diff algorithms
+similar = "2.3"
+
+# Shell integration
+shellexpand = "3.1"
+clap_complete = "4.4"
+
+# Text processing
+textwrap = "0.16"
+
+# Performance monitoring (optional)
+sysinfo = "0.30"
+
+# Cross-platform path handling
+dunce = "1.0"
+
+# Log tailing
+notify = "6.1"
+linemux = "0.2"
+
+# JSON Schema generation
+schemars = "0.8"

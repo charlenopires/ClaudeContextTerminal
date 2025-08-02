@@ -186,8 +186,12 @@ impl ConversationManager {
         // Create event channel for the agent
         let (event_tx, _event_rx) = mpsc::unbounded_channel();
         
+        // Create a temporary tool manager (TODO: Pass from app)
+        let tool_permissions = crate::llm::tools::ToolPermissions::default();
+        let tool_manager = Arc::new(crate::llm::tools::ToolManager::new(tool_permissions));
+        
         // Create agent
-        let agent = Agent::new(llm_provider, event_tx, session_id.clone());
+        let agent = Agent::new(llm_provider, tool_manager, event_tx, session_id.clone());
         
         // Create session manager (this should be passed in, but for now create a new one)
         // TODO: Pass session manager from app

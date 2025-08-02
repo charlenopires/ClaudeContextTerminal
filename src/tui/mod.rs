@@ -7,6 +7,7 @@ mod events;
 mod keys;
 mod pages;
 mod styles;
+mod themes;
 mod utils;
 
 pub use app::App;

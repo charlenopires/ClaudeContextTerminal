@@ -16,7 +16,7 @@ use tracing::{debug, info, error};
 
 use crate::{
     config::Config,
-    llm::{LlmProvider, ProviderFactory, ProviderConfig},
+    llm::{LlmProvider, ProviderFactory, ProviderConfig, tools::{ToolManager, ToolPermissions}},
     session::{SessionManager, Session, ConversationManager},
 };
 
@@ -26,6 +26,7 @@ pub struct App {
     session_manager: Arc<SessionManager>,
     conversation_manager: Arc<ConversationManager>,
     llm_provider: Arc<dyn LlmProvider>,
+    tool_manager: Arc<ToolManager>,
     event_tx: mpsc::UnboundedSender<AppEvent>,
     event_rx: RwLock<Option<mpsc::UnboundedReceiver<AppEvent>>>,
     shutdown_tx: Option<mpsc::Sender<()>>,
@@ -60,6 +61,22 @@ impl App {
         let llm_provider = ProviderFactory::create_provider(provider_config)?;
         llm_provider.validate_config()?;
         
+        // Initialize tool manager with permissions from config
+        let tool_permissions = ToolPermissions {
+            yolo_mode: config.yolo_mode.unwrap_or(false),
+            allow_read: true,
+            allow_write: !config.read_only.unwrap_or(false),
+            allow_execute: !config.read_only.unwrap_or(false),
+            allow_network: false,
+            restricted_paths: vec![
+                "/etc".to_string(),
+                "/sys".to_string(),
+                "/proc".to_string(),
+                "/dev".to_string(),
+            ],
+        };
+        let tool_manager = Arc::new(ToolManager::new(tool_permissions));
+        
         // Create event channel
         let (event_tx, event_rx) = mpsc::unbounded_channel();
         
@@ -68,6 +85,7 @@ impl App {
             session_manager,
             conversation_manager,
             llm_provider: Arc::from(llm_provider),
+            tool_manager,
             event_tx,
             event_rx: RwLock::new(Some(event_rx)),
             shutdown_tx: None,
@@ -87,6 +105,11 @@ impl App {
     /// Get the LLM provider
     pub fn llm_provider(&self) -> &Arc<dyn LlmProvider> {
         &self.llm_provider
+    }
+    
+    /// Get the tool manager
+    pub fn tool_manager(&self) -> &Arc<ToolManager> {
+        &self.tool_manager
     }
     
     /// Get the event sender
