@@ -1,4 +1,4 @@
-# Crush-RS
+# Goofy-RS
 
 A Rust port of [Charmbracelet's Crush](https://github.com/charmbracelet/crush) - a terminal-based AI coding assistant.
 
@@ -25,7 +25,7 @@ A Rust port of [Charmbracelet's Crush](https://github.com/charmbracelet/crush) -
 
 ```bash
 git clone <this-repository>
-cd ClaudeContextTerminal
+cd Goofy
 cargo build --release
 ```
 
@@ -48,11 +48,11 @@ For Ollama (local models), no API key is required, but you need to:
 
 ### Configuration File
 
-Copy `crush.example.json` to `crush.json` and customize:
+Copy `goofy.example.json` to `goofy.json` and customize:
 
 ```bash
-cp crush.example.json crush.json
-# Edit crush.json with your preferences
+cp goofy.example.json goofy.json
+# Edit goofy.json with your preferences
 ```
 
 ## Usage
@@ -62,7 +62,7 @@ cp crush.example.json crush.json
 Start the TUI interface:
 
 ```bash
-./target/release/crush-rs
+./target/release/goofy-rs
 ```
 
 ### Non-Interactive Mode
@@ -71,16 +71,16 @@ Run single prompts:
 
 ```bash
 # Direct prompt
-./target/release/crush-rs run "Explain Rust ownership"
+./target/release/goofy-rs run "Explain Rust ownership"
 
 # From stdin
-echo "Generate a binary search function in Rust" | ./target/release/crush-rs run
+echo "Generate a binary search function in Rust" | ./target/release/goofy-rs run
 
 # Quiet mode (no spinner)
-./target/release/crush-rs run --quiet "Review this code"
+./target/release/goofy-rs run --quiet "Review this code"
 
 # Using Ollama (local models)
-CRUSH_PROVIDER=ollama CRUSH_MODEL=llama3.2 ./target/release/crush-rs run "Explain closures in Rust"
+GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy-rs run "Explain closures in Rust"
 ```
 
 ### Options
@@ -121,13 +121,13 @@ cargo test
 ### Debug Logging
 
 ```bash
-RUST_LOG=debug ./target/release/crush-rs run "test prompt"
+RUST_LOG=debug ./target/release/goofy-rs run "test prompt"
 ```
 
 ### Profiling
 
 ```bash
-CRUSH_PROFILE=true ./target/release/crush-rs
+GOOFY_PROFILE=true ./target/release/goofy-rs
 # Profile server runs on http://localhost:6060
 ```
 
@@ -176,7 +176,7 @@ echo $OPENAI_API_KEY
 echo $ANTHROPIC_API_KEY
 
 # Test with debug logging
-RUST_LOG=debug ./target/release/crush-rs run "test"
+RUST_LOG=debug ./target/release/goofy-rs run "test"
 ```
 
 ### Ollama Issues
@@ -191,7 +191,7 @@ curl http://localhost:11434/api/tags
 ollama pull llama3.2
 
 # Test Ollama integration
-CRUSH_PROVIDER=ollama CRUSH_MODEL=llama3.2 ./target/release/crush-rs run "Hello"
+GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy-rs run "Hello"
 ```
 
 ### Build Issues
@@ -208,6 +208,6 @@ cargo build --release
 Reset session database:
 
 ```bash
-rm ~/.crush/sessions.db
-./target/release/crush-rs run "test"  # Recreates database
+rm ~/.goofy/sessions.db
+./target/release/goofy-rs run "test"  # Recreates database
 ```

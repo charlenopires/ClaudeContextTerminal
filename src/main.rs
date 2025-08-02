@@ -36,7 +36,7 @@ async fn main() {
     }
 
     // Start profiling server if enabled
-    if let Ok(profile_port) = env::var("CRUSH_PROFILE") {
+    if let Ok(profile_port) = env::var("GOOFY_PROFILE") {
         start_profiling_server(&profile_port).await;
     }
 
@@ -49,7 +49,7 @@ async fn main() {
 
 fn init_logging() -> Result<()> {
     let env_filter = tracing_subscriber::EnvFilter::try_from_default_env()
-        .unwrap_or_else(|_| "crush_rs=info".into());
+        .unwrap_or_else(|_| "goofy_rs=info".into());
 
     tracing_subscriber::registry()
         .with(env_filter)

@@ -7,19 +7,19 @@ use crate::{app::App, tui};
 use crate::config::Config;
 use super::run::RunCommand;
 
-/// Crush - The glamourous AI coding agent for your favourite terminal 💘
+/// Goofy - The glamourous AI coding agent for your favourite terminal 💘
 #[derive(Parser)]
 #[command(
-    name = "crush",
+    name = "goofy",
     version,
     about = "The glamourous AI coding agent for your favourite terminal 💘",
-    long_about = r#"Crush is an AI-powered terminal application that helps you with software development tasks.
+    long_about = r#"Goofy is an AI-powered terminal application that helps you with software development tasks.
 It provides intelligent code assistance, documentation generation, and various development utilities.
 
 Examples:
-  crush                           # Start interactive mode
-  crush run "explain this code"   # Run a single prompt
-  crush --cwd /path/to/project    # Set working directory"#
+  goofy                           # Start interactive mode
+  goofy run "explain this code"   # Run a single prompt
+  goofy --cwd /path/to/project    # Set working directory"#
 )]
 pub struct Cli {
     /// Current working directory

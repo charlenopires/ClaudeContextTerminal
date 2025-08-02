@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the Ollama integration added to the Crush-RS application, enabling the use of local language models through the Ollama server.
+This document describes the Ollama integration added to the Goofy-RS application, enabling the use of local language models through the Ollama server.
 
 ## Features Added
 
@@ -16,14 +16,14 @@ This document describes the Ollama integration added to the Crush-RS application
 
 ### ✅ Configuration Support
 
-- **Environment variables**: `OLLAMA_HOST`, `OLLAMA_BASE_URL`, `CRUSH_PROVIDER`, `CRUSH_MODEL`
-- **JSON configuration**: Added Ollama section to `crush.example.json`
+- **Environment variables**: `OLLAMA_HOST`, `OLLAMA_BASE_URL`, `GOOFY_PROVIDER`, `GOOFY_MODEL`
+- **JSON configuration**: Added Ollama section to `goofy.example.json`
 - **No API key required**: Automatically handles Ollama's keyless authentication
 
 ### ✅ CLI Integration
 
-- **Provider selection**: Use `CRUSH_PROVIDER=ollama` to select Ollama
-- **Model selection**: Use `CRUSH_MODEL=llama3.2` to specify the model
+- **Provider selection**: Use `GOOFY_PROVIDER=ollama` to select Ollama
+- **Model selection**: Use `GOOFY_MODEL=llama3.2` to specify the model
 - **All existing CLI options**: Works with `--cwd`, `--debug`, `--quiet`, etc.
 
 ## Usage
@@ -38,26 +38,26 @@ This document describes the Ollama integration added to the Crush-RS application
 
 ```bash
 # Using environment variables
-CRUSH_PROVIDER=ollama CRUSH_MODEL=llama3.2 ./target/release/crush-rs run "Explain Rust ownership"
+GOOFY_PROVIDER=ollama GOOFY_MODEL=llama3.2 ./target/release/goofy-rs run "Explain Rust ownership"
 
 # Using configuration file
-# Edit crush.json to set default_provider: "ollama"
-./target/release/crush-rs run "Generate a binary search function"
+# Edit goofy.json to set default_provider: "ollama"
+./target/release/goofy-rs run "Generate a binary search function"
 
 # Interactive mode with Ollama
-CRUSH_PROVIDER=ollama ./target/release/crush-rs
+GOOFY_PROVIDER=ollama ./target/release/goofy-rs
 ```
 
 ### Configuration Examples
 
 #### Environment Variables (.env)
 ```bash
-CRUSH_PROVIDER=ollama
-CRUSH_MODEL=llama3.2
+GOOFY_PROVIDER=ollama
+GOOFY_MODEL=llama3.2
 OLLAMA_HOST=http://localhost:11434
 ```
 
-#### JSON Configuration (crush.json)
+#### JSON Configuration (goofy.json)
 ```json
 {
   "llm": {
@@ -86,10 +86,10 @@ The Ollama provider (`src/llm/ollama.rs`) implements the `LlmProvider` trait wit
 
 ### Message Format Conversion
 
-Converts between Crush's internal message format and Ollama's API format:
+Converts between Goofy's internal message format and Ollama's API format:
 
 ```rust
-// Crush format -> Ollama format
+// Goofy format -> Ollama format
 Message::new_user("Hello") -> OllamaMessage { role: "user", content: "Hello" }
 ```
 
@@ -103,7 +103,7 @@ let is_healthy = provider.health_check().await?;
 
 ## Available Models
 
-Common Ollama models that work with Crush-RS:
+Common Ollama models that work with Goofy-RS:
 
 - **Code Models**: `codellama`, `deepseek-coder`, `starcoder2`
 - **General Models**: `llama3.2`, `llama3.1`, `mistral`, `phi3`, `gemma2`
@@ -157,7 +157,7 @@ Run tests: `cargo test ollama`
 Enable debug logging to see detailed request/response information:
 
 ```bash
-RUST_LOG=debug CRUSH_PROVIDER=ollama ./target/release/crush-rs run "test"
+RUST_LOG=debug GOOFY_PROVIDER=ollama ./target/release/goofy-rs run "test"
 ```
 
 ## Future Enhancements
@@ -177,4 +177,4 @@ Potential improvements for the Ollama integration:
 - **Supported Platforms**: All platforms supported by Ollama (Linux, macOS, Windows)
 - **Models**: Any model supported by Ollama
 
-The Ollama integration is now fully functional and provides a complete local LLM solution for the Crush-RS application.
+The Ollama integration is now fully functional and provides a complete local LLM solution for the Goofy-RS application.

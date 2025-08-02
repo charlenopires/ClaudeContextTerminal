@@ -1,5 +1,5 @@
 [package]
-name = "crush-rs"
+name = "goofy-rs"
 version = "0.1.0"
 edition = "2021"
 description = "A terminal-based AI coding assistant - Rust port of Charmbracelet's Crush"

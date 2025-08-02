@@ -91,7 +91,7 @@ impl Config {
     
     /// Load configuration from environment variables
     pub fn load_from_env(&mut self) {
-        if let Ok(provider) = std::env::var("CRUSH_PROVIDER") {
+        if let Ok(provider) = std::env::var("GOOFY_PROVIDER") {
             self.provider = provider;
         }
         
@@ -122,57 +122,57 @@ impl Config {
         }
         
         // Generic API key
-        if let Ok(key) = std::env::var("CRUSH_API_KEY") {
+        if let Ok(key) = std::env::var("GOOFY_API_KEY") {
             self.api_key = Some(key);
         }
         
-        if let Ok(base_url) = std::env::var("CRUSH_BASE_URL") {
+        if let Ok(base_url) = std::env::var("GOOFY_BASE_URL") {
             self.base_url = Some(base_url);
         }
         
-        if let Ok(model) = std::env::var("CRUSH_MODEL") {
+        if let Ok(model) = std::env::var("GOOFY_MODEL") {
             self.model = model;
         }
         
-        if let Ok(max_tokens_str) = std::env::var("CRUSH_MAX_TOKENS") {
+        if let Ok(max_tokens_str) = std::env::var("GOOFY_MAX_TOKENS") {
             if let Ok(max_tokens) = max_tokens_str.parse() {
                 self.max_tokens = Some(max_tokens);
             }
         }
         
-        if let Ok(temp_str) = std::env::var("CRUSH_TEMPERATURE") {
+        if let Ok(temp_str) = std::env::var("GOOFY_TEMPERATURE") {
             if let Ok(temperature) = temp_str.parse() {
                 self.temperature = Some(temperature);
             }
         }
         
-        if let Ok(stream_str) = std::env::var("CRUSH_STREAM") {
+        if let Ok(stream_str) = std::env::var("GOOFY_STREAM") {
             self.stream = stream_str.to_lowercase() == "true";
         }
         
-        if let Ok(data_dir) = std::env::var("CRUSH_DATA_DIR") {
+        if let Ok(data_dir) = std::env::var("GOOFY_DATA_DIR") {
             self.data_dir = PathBuf::from(data_dir);
         }
         
-        if let Ok(system_message) = std::env::var("CRUSH_SYSTEM_MESSAGE") {
+        if let Ok(system_message) = std::env::var("GOOFY_SYSTEM_MESSAGE") {
             self.system_message = Some(system_message);
         }
     }
     
-    /// Load configuration from crush.json files
+    /// Load configuration from goofy.json files
     pub async fn load_from_file() -> Result<Self> {
-        // Configuration priority (as per Crush documentation):
-        // 1. ./.crush.json
-        // 2. ./crush.json
-        // 3. $HOME/.config/crush/crush.json
+        // Configuration priority (as per Goofy documentation):
+        // 1. ./.goofy.json
+        // 2. ./goofy.json
+        // 3. $HOME/.config/goofy/goofy.json
         
         let mut config_paths = vec![
-            PathBuf::from("./.crush.json"),
-            PathBuf::from("./crush.json"),
+            PathBuf::from("./.goofy.json"),
+            PathBuf::from("./goofy.json"),
         ];
         
         if let Some(config_dir) = dirs::config_dir() {
-            config_paths.push(config_dir.join("crush").join("crush.json"));
+            config_paths.push(config_dir.join("goofy").join("goofy.json"));
         }
         
         for path in config_paths {
@@ -184,11 +184,11 @@ impl Config {
             }
         }
         
-        // Check for existing crush.json in current directory
-        let crush_json = PathBuf::from("./crush.json");
-        if crush_json.exists() {
-            debug!("Loading configuration from: {}", crush_json.display());
-            let content = tokio::fs::read_to_string(&crush_json).await?;
+        // Check for existing goofy.json in current directory
+        let goofy_json = PathBuf::from("./goofy.json");
+        if goofy_json.exists() {
+            debug!("Loading configuration from: {}", goofy_json.display());
+            let content = tokio::fs::read_to_string(&goofy_json).await?;
             let config: Self = serde_json::from_str(&content)?;
             return Ok(config);
         }
@@ -240,7 +240,7 @@ impl Config {
     pub fn validate(&self) -> Result<()> {
         if !self.has_api_key() {
             return Err(anyhow::anyhow!(
-                "No API key configured. Set OPENAI_API_KEY, ANTHROPIC_API_KEY, or CRUSH_API_KEY environment variable. For Ollama, no API key is required."
+                "No API key configured. Set OPENAI_API_KEY, ANTHROPIC_API_KEY, or GOOFY_API_KEY environment variable. For Ollama, no API key is required."
             ));
         }
         
