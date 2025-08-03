@@ -2,7 +2,7 @@
 // These would contain text display, input components, etc.
 
 use super::{Component, ComponentState};
-use crate::tui::{styles::Theme, Frame};
+use crate::tui::{themes::Theme, Frame};
 use anyhow::Result;
 use async_trait::async_trait;
 use crossterm::event::{KeyEvent, MouseEvent};

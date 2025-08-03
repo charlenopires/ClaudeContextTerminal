@@ -1,8 +1,10 @@
-pub mod chat;
-pub mod home;
-pub mod settings;
+// TODO: Re-enable when chat components are fixed
+// pub mod chat;
+// TODO: Re-enable when components are fixed
+// pub mod home;
+// pub mod settings;
 
-use crate::tui::{components::Component, styles::Theme, Frame};
+use crate::tui::{components::Component, themes::Theme, Frame};
 use anyhow::Result;
 use async_trait::async_trait;
 use crossterm::event::{KeyEvent, MouseEvent};

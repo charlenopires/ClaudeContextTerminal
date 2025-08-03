@@ -5,7 +5,10 @@ use std::{path::PathBuf, collections::HashMap};
 use tracing::debug;
 
 pub mod lsp;
+pub mod advanced;
+
 use self::lsp::LspConfig;
+pub use advanced::*;
 
 /// Application configuration
 #[derive(Clone, Debug, Serialize, Deserialize, Default, JsonSchema)]
@@ -71,8 +74,27 @@ impl Config {
         config.load_from_env();
         
         // Try to load from configuration files
-        if let Ok(file_config) = Self::load_from_file().await {
-            config.merge_with(file_config);
+        match Self::load_from_file().await {
+            Ok(file_config) => {
+                debug!("Successfully loaded file config");
+                config.merge_with(file_config);
+            }
+            Err(e) => {
+                debug!("Failed to load file config: {}", e);
+            }
+        }
+        
+        // Auto-configure Ollama if no provider is set and Ollama is available
+        if config.provider.is_empty() {
+            debug!("No provider configured, checking for Ollama");
+            if config.is_ollama_available().await {
+                debug!("Ollama is available, auto-configuring");
+                config.provider = "ollama".to_string();
+                config.base_url = Some("http://localhost:11434".to_string());
+                if config.model.is_empty() {
+                    config.model = "qwen3-coder:latest".to_string();
+                }
+            }
         }
         
         // Ensure data directory exists
@@ -182,6 +204,7 @@ impl Config {
                 debug!("Loading configuration from: {}", path.display());
                 let content = tokio::fs::read_to_string(&path).await?;
                 let config: Self = serde_json::from_str(&content)?;
+                debug!("Loaded config with provider: '{}'", config.provider);
                 return Ok(config);
             }
         }
@@ -192,6 +215,7 @@ impl Config {
             debug!("Loading configuration from: {}", goofy_json.display());
             let content = tokio::fs::read_to_string(&goofy_json).await?;
             let config: Self = serde_json::from_str(&content)?;
+            debug!("Loaded config with provider: '{}'", config.provider);
             return Ok(config);
         }
         
@@ -200,6 +224,13 @@ impl Config {
     
     /// Merge another configuration into this one
     pub fn merge_with(&mut self, other: Self) {
+        use tracing::debug;
+        debug!("Merging config: current provider='{}', other provider='{}'", self.provider, other.provider);
+        
+        if !other.provider.is_empty() {
+            debug!("Updating provider from '{}' to '{}'", self.provider, other.provider);
+            self.provider = other.provider;
+        }
         if other.api_key.is_some() {
             self.api_key = other.api_key;
         }
@@ -229,13 +260,40 @@ impl Config {
         }
     }
     
+    /// Check if Ollama is available at the default URL
+    async fn is_ollama_available(&self) -> bool {
+        let url = "http://localhost:11434/api/tags";
+        match reqwest::get(url).await {
+            Ok(response) => {
+                let available = response.status().is_success();
+                if available {
+                    debug!("Ollama is available at {}", url);
+                } else {
+                    debug!("Ollama returned status: {}", response.status());
+                }
+                available
+            }
+            Err(e) => {
+                debug!("Ollama not available: {}", e);
+                false
+            }
+        }
+    }
+
     /// Check if the configuration has a valid API key
     pub fn has_api_key(&self) -> bool {
+        use tracing::debug;
+        debug!("Checking API key for provider: '{}'", self.provider);
+        
         // Ollama doesn't require API keys
         if self.provider == "ollama" {
+            debug!("Provider is ollama, API key not required");
             return true;
         }
-        self.api_key.is_some() && !self.api_key.as_ref().unwrap().is_empty()
+        
+        let has_key = self.api_key.is_some() && !self.api_key.as_ref().unwrap().is_empty();
+        debug!("Provider '{}' requires API key, has_key: {}", self.provider, has_key);
+        has_key
     }
     
     /// Validate the configuration

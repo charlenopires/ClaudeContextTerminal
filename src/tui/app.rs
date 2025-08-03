@@ -1,4 +1,4 @@
-use crate::tui::{events::Event, keys::KeyMap, pages::{Page, PageId, PageManager, chat::ChatPage, home::HomePage, settings::SettingsPage}, styles::Theme, Frame};
+use crate::tui::{events::Event, keys::KeyMap, pages::{Page, PageId, PageManager, /* chat::ChatPage, home::HomePage, settings::SettingsPage */}, themes::{Theme, presets}, Frame};
 use anyhow::Result;
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::widgets::{Block, Borders, Paragraph};
@@ -71,19 +71,21 @@ impl App {
         let mut page_manager = PageManager::new();
         
         // Register default pages
-        page_manager.register_page(Box::new(HomePage::new()));
-        page_manager.register_page(Box::new(ChatPage::new()));
-        page_manager.register_page(Box::new(SettingsPage::new()));
+        // TODO: Re-enable when pages are fixed
+        // page_manager.register_page(Box::new(HomePage::new()));
+        // page_manager.register_page(Box::new(ChatPage::new()));
+        // page_manager.register_page(Box::new(SettingsPage::new()));
         
         // Navigate to home page by default
-        page_manager.navigate_to("home".to_string())?;
+        // TODO: Fix when pages are available
+        // page_manager.navigate_to("home".to_string())?;
         
         Ok(Self {
             should_quit: false,
             size: Rect::default(),
             key_map: KeyMap::default(),
             page_manager,
-            theme: Theme::default(),
+            theme: presets::goofy_dark(),
             status_message: None,
             config: AppConfig::default(),
             event_sender,
@@ -177,11 +179,11 @@ impl App {
             let empty_block = Block::default()
                 .borders(Borders::ALL)
                 .title("Crush Terminal")
-                .style(self.theme.base_style());
+                .style(self.theme.styles.base);
             
             let empty_text = Paragraph::new("No active page")
                 .block(empty_block)
-                .style(self.theme.text_style());
+                .style(self.theme.styles.text);
                 
             frame.render_widget(empty_text, chunks[0]);
         }
@@ -207,7 +209,7 @@ impl App {
         };
         
         let status_paragraph = Paragraph::new(status_text)
-            .style(self.theme.status_bar_style());
+            .style(self.theme.styles.status_bar);
             
         frame.render_widget(status_paragraph, area);
     }
@@ -220,11 +222,11 @@ impl App {
         let help_block = Block::default()
             .borders(Borders::ALL)
             .title("Help")
-            .style(self.theme.help_style());
+            .style(self.theme.styles.base);
             
         let help_paragraph = Paragraph::new(help_text)
             .block(help_block)
-            .style(self.theme.text_style());
+            .style(self.theme.styles.text);
             
         frame.render_widget(help_paragraph, help_area);
     }

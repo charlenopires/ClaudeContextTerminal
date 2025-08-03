@@ -1,11 +1,15 @@
 use super::{Page, PageId};
-use crate::tui::{
-    components::{
-        chat::{ChatInput, ChatMessage, ChatMessageList, ChatSession},
-        Component,
+use crate::{
+    session::Session,
+    tui::{
+        components::{
+            // TODO: Re-enable when chat module is fixed
+            // chat::{ChatInput, ChatMessage, ChatMessageList},
+            Component,
+        },
+        themes::Theme,
+        Frame,
     },
-    styles::Theme,
-    Frame,
 };
 use anyhow::Result;
 use async_trait::async_trait;
@@ -21,7 +25,7 @@ pub struct ChatPage {
     title: String,
     message_list: ChatMessageList,
     input: ChatInput,
-    current_session: Option<ChatSession>,
+    current_session: Option<Session>,
 }
 
 impl ChatPage {

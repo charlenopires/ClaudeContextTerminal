@@ -201,15 +201,19 @@ impl App {
         // Start event loop
         self.start_event_loop().await?;
         
-        // TODO: Initialize and run the TUI using ratatui/crossterm
-        // This would be where the Bubble Tea equivalent goes
-        
-        println!("Interactive mode would start here");
+        println!("🎉 Goofy Interactive Mode");
+        println!("Provider: {}", self.config.provider);
+        println!("Model: {}", self.config.model);
+        println!();
+        println!("Welcome to Goofy! The TUI is currently under development.");
+        println!("For now, you can use 'goofy run \"your prompt\"' for non-interactive mode.");
+        println!();
         println!("Press Ctrl+C to exit");
         
         // For now, just wait for a signal
         tokio::signal::ctrl_c().await?;
         
+        println!("\nGoodbye! 👋");
         Ok(())
     }
     

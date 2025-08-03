@@ -6,6 +6,7 @@ mod components;
 mod events;
 mod keys;
 mod pages;
+mod polish;
 mod styles;
 mod themes;
 mod utils;

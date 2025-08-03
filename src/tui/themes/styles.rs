@@ -1,7 +1,7 @@
 //! Style utilities and component-specific styling
 
 use ratatui::style::{Color, Style, Modifier};
-use super::{Theme, ColorScheme};
+use super::Theme;
 
 /// Style builder for creating consistent styles
 pub struct StyleBuilder {

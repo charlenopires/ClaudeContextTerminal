@@ -121,4 +121,13 @@ impl Theme {
             .fg(self.placeholder)
             .add_modifier(Modifier::ITALIC)
     }
+    
+    // Additional color getters for dialogs
+    pub fn text_muted(&self) -> Color {
+        self.text_dim
+    }
+    
+    pub fn surface(&self) -> Color {
+        self.background_alt
+    }
 }

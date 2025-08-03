@@ -8,6 +8,8 @@ pub struct ColorPalette;
 
 impl ColorPalette {
     // Goofy brand colors
+    pub const GOOFY_ORANGE: Color = Color::Rgb(255, 165, 0);      // Primary brand color
+    pub const GOOFY_PURPLE: Color = Color::Rgb(138, 43, 226);     // Secondary brand color
     pub const GOOFY_BLUE: Color = Color::Rgb(130, 130, 255);
     pub const GOOFY_RED: Color = Color::Rgb(255, 130, 130);
     pub const GOOFY_GREEN: Color = Color::Rgb(130, 255, 130);
@@ -253,6 +255,34 @@ pub mod manipulate {
     /// Generate an analogous color scheme
     pub fn analogous(color: Color) -> (Color, Color) {
         (shift_hue(color, 30.0), shift_hue(color, -30.0))
+    }
+    
+    /// Create a linear gradient between two colors
+    /// Returns a vector of colors for smooth transition
+    pub fn linear_gradient(start: Color, end: Color, steps: usize) -> Vec<Color> {
+        if steps == 0 {
+            return vec![];
+        }
+        if steps == 1 {
+            return vec![start];
+        }
+        
+        let mut gradient = Vec::with_capacity(steps);
+        
+        for i in 0..steps {
+            let ratio = i as f32 / (steps - 1) as f32;
+            gradient.push(mix(start, end, ratio));
+        }
+        
+        gradient
+    }
+    
+    /// Apply gradient to text characters
+    pub fn apply_gradient_to_text(text: &str, start: Color, end: Color) -> Vec<(char, Color)> {
+        let chars: Vec<char> = text.chars().collect();
+        let gradient = linear_gradient(start, end, chars.len());
+        
+        chars.into_iter().zip(gradient.into_iter()).collect()
     }
 }
 

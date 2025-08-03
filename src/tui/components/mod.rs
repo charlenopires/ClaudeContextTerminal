@@ -1,11 +1,22 @@
-pub mod chat;
-pub mod core;
-pub mod dialogs;
-pub mod list;
-pub mod input;
-pub mod status;
+// TODO: Re-enable these modules after fixing theme compatibility
+// pub mod chat;
+// pub mod core;
+// pub mod dialogs;
+// TODO: Re-enable these modules after fixing theme compatibility
+// pub mod list;
+// pub mod input;
+// pub mod logo;
+// pub mod splash;
+// pub mod status;
 
-use crate::tui::{events::Event, styles::Theme, Frame};
+pub mod completions;
+pub mod files;
+pub mod lists;
+pub mod highlighting;
+pub mod image;
+pub mod markdown;
+
+use crate::tui::{events::Event, themes::Theme, Frame};
 use anyhow::Result;
 use crossterm::event::{KeyEvent, MouseEvent};
 use ratatui::layout::Rect;

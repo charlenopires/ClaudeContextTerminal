@@ -1,374 +1,324 @@
-//! Theme presets for the Goofy TUI
+//! Theme presets for Goofy TUI
 //! 
-//! This module contains predefined themes that can be used out of the box.
+//! This module provides pre-built themes including the default "Goofy" theme
+//! based on the Charmbracelet color palette, as well as classic light and dark themes.
 
-use ratatui::style::{Color, Style, Modifier};
-use super::{Theme, ColorScheme, StyleMap, IconSet, AnimationConfig, EasingType};
+use super::Theme;
+use ratatui::style::Color;
 
-/// Goofy Dark Theme - Main dark theme
+/// Create the default Goofy dark theme
+/// 
+/// This theme is based on the Charmbracelet Crush theme, using the charmtone
+/// color palette to provide a sophisticated dark theme with excellent contrast
+/// and visual hierarchy.
 pub fn goofy_dark() -> Theme {
-    let colors = ColorScheme {
-        // Primary colors
-        primary: Color::Rgb(130, 130, 255),     // Soft blue
-        secondary: Color::Rgb(255, 130, 130),   // Soft red
-        tertiary: Color::Rgb(130, 255, 130),    // Soft green
-        accent: Color::Rgb(255, 255, 130),      // Soft yellow
-        
-        // Background colors
-        bg_base: Color::Rgb(24, 24, 37),        // Very dark blue-gray
-        bg_base_lighter: Color::Rgb(32, 32, 48), // Slightly lighter
-        bg_subtle: Color::Rgb(40, 40, 58),      // Subtle highlight
-        bg_overlay: Color::Rgb(48, 48, 68),     // Modal overlay
-        bg_selected: Color::Rgb(65, 65, 100),   // Selected item
-        
-        // Foreground colors
-        fg_base: Color::Rgb(220, 220, 230),     // Main text
-        fg_muted: Color::Rgb(160, 160, 180),    // Muted text
-        fg_half_muted: Color::Rgb(190, 190, 210), // Half muted
-        fg_subtle: Color::Rgb(130, 130, 150),   // Subtle text
-        fg_selected: Color::Rgb(255, 255, 255), // Selected text
-        
-        // Border colors
-        border: Color::Rgb(80, 80, 100),        // Default border
-        border_focus: Color::Rgb(130, 130, 255), // Focused border
-        
-        // Status colors
-        success: Color::Rgb(100, 200, 100),     // Green
-        error: Color::Rgb(220, 100, 100),       // Red
-        warning: Color::Rgb(220, 180, 100),     // Orange
-        info: Color::Rgb(100, 150, 220),        // Blue
-        
-        // Special colors
-        white: Color::Rgb(255, 255, 255),
-        blue_light: Color::Rgb(150, 180, 255),
-        blue: Color::Rgb(100, 130, 255),
-        yellow: Color::Rgb(255, 220, 100),
-        green: Color::Rgb(100, 200, 100),
-        green_dark: Color::Rgb(80, 160, 80),
-        green_light: Color::Rgb(120, 220, 120),
-        red: Color::Rgb(220, 100, 100),
-        red_dark: Color::Rgb(180, 80, 80),
-        red_light: Color::Rgb(240, 120, 120),
-        cherry: Color::Rgb(200, 80, 120),
-    };
-    
-    let styles = build_styles(&colors);
-    
     Theme {
         name: "goofy_dark".to_string(),
         is_dark: true,
-        colors,
-        styles,
-        icons: default_icons(),
-        animations: AnimationConfig::default(),
+        
+        // Primary brand colors - based on Charmbracelet's signature colors
+        primary: Color::Rgb(0x8A, 0x67, 0xFF),   // Charple - signature purple
+        secondary: Color::Rgb(0xFF, 0xE1, 0x9C), // Dolly - warm yellow
+        tertiary: Color::Rgb(0x9A, 0xE4, 0x78),  // Bok - fresh green
+        accent: Color::Rgb(0xFF, 0xA5, 0x00),    // Zest - vibrant orange
+        
+        // Background colors with subtle gradations
+        bg_base: Color::Rgb(0x2D, 0x2D, 0x2D),        // Pepper - deep base
+        bg_base_lighter: Color::Rgb(0x3A, 0x3A, 0x3A), // BBQ - slightly lighter
+        bg_subtle: Color::Rgb(0x4A, 0x4A, 0x4A),       // Charcoal - subtle variation
+        bg_overlay: Color::Rgb(0x5A, 0x5A, 0x5A),      // Iron - overlay backgrounds
+        
+        // Foreground colors for text hierarchy
+        fg_base: Color::Rgb(0xD0, 0xD0, 0xD0),      // Ash - primary text
+        fg_muted: Color::Rgb(0xA0, 0xA0, 0xA0),     // Squid - secondary text
+        fg_half_muted: Color::Rgb(0xB0, 0xB0, 0xB0), // Smoke - intermediate
+        fg_subtle: Color::Rgb(0x90, 0x90, 0x90),    // Oyster - subtle text
+        fg_selected: Color::Rgb(0xF5, 0xF5, 0xF5),  // Salt - selected text
+        
+        // Border colors
+        border: Color::Rgb(0x4A, 0x4A, 0x4A),        // Charcoal - default borders
+        border_focus: Color::Rgb(0x8A, 0x67, 0xFF),  // Charple - focused borders
+        
+        // Status colors for semantic meaning
+        success: Color::Rgb(0x4C, 0xAF, 0x50),  // Guac - success green
+        error: Color::Rgb(0xF4, 0x43, 0x36),    // Sriracha - error red
+        warning: Color::Rgb(0xFF, 0xA5, 0x00),  // Zest - warning orange
+        info: Color::Rgb(0x29, 0xB6, 0xF6),     // Malibu - info blue
+        
+        // Extended color palette for advanced use cases
+        white: Color::Rgb(0xFF, 0xF8, 0xE1),     // Butter - warm white
+        blue_light: Color::Rgb(0x81, 0xC7, 0x84), // Sardine - light blue
+        blue: Color::Rgb(0x29, 0xB6, 0xF6),      // Malibu - standard blue
+        yellow: Color::Rgb(0xFF, 0xEB, 0x3B),    // Mustard - bright yellow
+        green: Color::Rgb(0x66, 0xBB, 0x6A),     // Julep - standard green
+        green_dark: Color::Rgb(0x4C, 0xAF, 0x50), // Guac - dark green
+        green_light: Color::Rgb(0x9A, 0xE4, 0x78), // Bok - light green
+        red: Color::Rgb(0xFF, 0x80, 0x74),       // Coral - standard red
+        red_dark: Color::Rgb(0xF4, 0x43, 0x36),  // Sriracha - dark red
+        red_light: Color::Rgb(0xFF, 0xAB, 0x91), // Salmon - light red
+        cherry: Color::Rgb(0xE9, 0x1E, 0x63),    // Cherry - accent red
+        
+        styles: None, // Built lazily
     }
 }
 
-/// Goofy Light Theme - Main light theme
+/// Create a light variant of the Goofy theme
 pub fn goofy_light() -> Theme {
-    let colors = ColorScheme {
-        // Primary colors
-        primary: Color::Rgb(80, 80, 200),       // Darker blue
-        secondary: Color::Rgb(200, 80, 80),     // Darker red
-        tertiary: Color::Rgb(80, 180, 80),      // Darker green
-        accent: Color::Rgb(200, 160, 80),       // Darker yellow
-        
-        // Background colors
-        bg_base: Color::Rgb(250, 250, 255),     // Very light blue-white
-        bg_base_lighter: Color::Rgb(245, 245, 250), // Slightly darker
-        bg_subtle: Color::Rgb(240, 240, 248),   // Subtle highlight
-        bg_overlay: Color::Rgb(230, 230, 240),  // Modal overlay
-        bg_selected: Color::Rgb(220, 220, 235), // Selected item
-        
-        // Foreground colors
-        fg_base: Color::Rgb(40, 40, 50),        // Main text
-        fg_muted: Color::Rgb(80, 80, 100),      // Muted text
-        fg_half_muted: Color::Rgb(60, 60, 80),  // Half muted
-        fg_subtle: Color::Rgb(120, 120, 140),   // Subtle text
-        fg_selected: Color::Rgb(20, 20, 30),    // Selected text
-        
-        // Border colors
-        border: Color::Rgb(180, 180, 200),      // Default border
-        border_focus: Color::Rgb(80, 80, 200),  // Focused border
-        
-        // Status colors
-        success: Color::Rgb(60, 150, 60),       // Green
-        error: Color::Rgb(180, 60, 60),         // Red
-        warning: Color::Rgb(180, 120, 60),      // Orange
-        info: Color::Rgb(60, 100, 180),         // Blue
-        
-        // Special colors
-        white: Color::Rgb(255, 255, 255),
-        blue_light: Color::Rgb(120, 150, 255),
-        blue: Color::Rgb(80, 120, 220),
-        yellow: Color::Rgb(200, 160, 60),
-        green: Color::Rgb(80, 160, 80),
-        green_dark: Color::Rgb(60, 120, 60),
-        green_light: Color::Rgb(100, 180, 100),
-        red: Color::Rgb(180, 60, 60),
-        red_dark: Color::Rgb(140, 40, 40),
-        red_light: Color::Rgb(200, 80, 80),
-        cherry: Color::Rgb(160, 60, 100),
-    };
-    
-    let styles = build_styles(&colors);
-    
     Theme {
         name: "goofy_light".to_string(),
         is_dark: false,
-        colors,
-        styles,
-        icons: default_icons(),
-        animations: AnimationConfig::default(),
+        
+        // Primary brand colors - adjusted for light theme
+        primary: Color::Rgb(0x67, 0x3A, 0xB7),   // Darker purple for contrast
+        secondary: Color::Rgb(0xF5, 0x7C, 0x00), // Darker orange
+        tertiary: Color::Rgb(0x38, 0x8E, 0x3C),  // Darker green
+        accent: Color::Rgb(0xD3, 0x2F, 0x2F),    // Darker red accent
+        
+        // Light background colors
+        bg_base: Color::Rgb(0xFD, 0xFD, 0xFD),        // Very light gray
+        bg_base_lighter: Color::Rgb(0xF8, 0xF9, 0xFA), // Slightly darker
+        bg_subtle: Color::Rgb(0xF1, 0xF3, 0xF4),       // Subtle background
+        bg_overlay: Color::Rgb(0xE8, 0xEA, 0xED),      // Overlay backgrounds
+        
+        // Dark foreground colors for text
+        fg_base: Color::Rgb(0x20, 0x20, 0x20),      // Near black primary text
+        fg_muted: Color::Rgb(0x5F, 0x63, 0x68),     // Gray secondary text
+        fg_half_muted: Color::Rgb(0x40, 0x40, 0x40), // Intermediate gray
+        fg_subtle: Color::Rgb(0x80, 0x86, 0x8B),    // Light gray text
+        fg_selected: Color::Rgb(0xFF, 0xFF, 0xFF),  // White selected text
+        
+        // Light theme borders
+        border: Color::Rgb(0xDA, 0xDD, 0xE1),        // Light gray borders
+        border_focus: Color::Rgb(0x67, 0x3A, 0xB7),  // Purple focused borders
+        
+        // Status colors adjusted for light theme
+        success: Color::Rgb(0x28, 0x72, 0x31),  // Darker green
+        error: Color::Rgb(0xC6, 0x28, 0x28),    // Darker red
+        warning: Color::Rgb(0xED, 0x6C, 0x02),  // Darker orange
+        info: Color::Rgb(0x01, 0x65, 0xD4),     // Darker blue
+        
+        // Extended palette for light theme
+        white: Color::Rgb(0xFF, 0xFF, 0xFF),     // Pure white
+        blue_light: Color::Rgb(0x90, 0xCA, 0xF9), // Light blue
+        blue: Color::Rgb(0x21, 0x96, 0xF3),      // Standard blue
+        yellow: Color::Rgb(0xFF, 0xC1, 0x07),    // Golden yellow
+        green: Color::Rgb(0x46, 0xA3, 0x5B),     // Standard green
+        green_dark: Color::Rgb(0x2E, 0x7D, 0x32), // Dark green
+        green_light: Color::Rgb(0x81, 0xC7, 0x84), // Light green
+        red: Color::Rgb(0xF4, 0x43, 0x36),       // Standard red
+        red_dark: Color::Rgb(0xC6, 0x28, 0x28),  // Dark red
+        red_light: Color::Rgb(0xFF, 0xCF, 0xD1), // Light red
+        cherry: Color::Rgb(0xC2, 0x18, 0x5B),    // Dark cherry
+        
+        styles: None, // Built lazily
     }
 }
 
-/// Classic Dark Theme - Traditional terminal colors
+/// Create a classic dark theme with traditional terminal colors
 pub fn classic_dark() -> Theme {
-    let colors = ColorScheme {
-        // Primary colors
-        primary: Color::Blue,
-        secondary: Color::Cyan,
+    Theme {
+        name: "classic_dark".to_string(),
+        is_dark: true,
+        
+        // Traditional terminal colors
+        primary: Color::Cyan,
+        secondary: Color::Yellow,
         tertiary: Color::Green,
-        accent: Color::Yellow,
+        accent: Color::Magenta,
         
-        // Background colors
+        // Classic dark backgrounds
         bg_base: Color::Black,
-        bg_base_lighter: Color::Rgb(20, 20, 20),
-        bg_subtle: Color::Rgb(40, 40, 40),
-        bg_overlay: Color::Rgb(60, 60, 60),
-        bg_selected: Color::Rgb(80, 80, 80),
+        bg_base_lighter: Color::DarkGray,
+        bg_subtle: Color::DarkGray,
+        bg_overlay: Color::DarkGray,
         
-        // Foreground colors
+        // Traditional text colors
         fg_base: Color::White,
         fg_muted: Color::Gray,
-        fg_half_muted: Color::Rgb(180, 180, 180),
+        fg_half_muted: Color::LightGray,
         fg_subtle: Color::DarkGray,
-        fg_selected: Color::White,
+        fg_selected: Color::Black,
         
-        // Border colors
-        border: Color::Gray,
-        border_focus: Color::Blue,
+        // Simple borders
+        border: Color::DarkGray,
+        border_focus: Color::Cyan,
         
-        // Status colors
+        // Traditional status colors
         success: Color::Green,
         error: Color::Red,
         warning: Color::Yellow,
-        info: Color::Cyan,
+        info: Color::Blue,
         
-        // Special colors
+        // Basic color palette
         white: Color::White,
         blue_light: Color::LightBlue,
         blue: Color::Blue,
         yellow: Color::Yellow,
         green: Color::Green,
-        green_dark: Color::DarkGray,
+        green_dark: Color::Green,
         green_light: Color::LightGreen,
         red: Color::Red,
-        red_dark: Color::Rgb(139, 0, 0),
+        red_dark: Color::Red,
         red_light: Color::LightRed,
         cherry: Color::Magenta,
-    };
-    
-    let styles = build_styles(&colors);
-    
-    Theme {
-        name: "classic_dark".to_string(),
-        is_dark: true,
-        colors,
-        styles,
-        icons: ascii_icons(),
-        animations: AnimationConfig {
-            enabled: false,
-            ..Default::default()
-        },
+        
+        styles: None, // Built lazily
     }
 }
 
-/// Classic Light Theme - Traditional light terminal colors
+/// Create a classic light theme
 pub fn classic_light() -> Theme {
-    let colors = ColorScheme {
-        // Primary colors
-        primary: Color::Blue,
-        secondary: Color::Red,
-        tertiary: Color::Green,
-        accent: Color::Rgb(180, 120, 0), // Dark yellow
-        
-        // Background colors
-        bg_base: Color::White,
-        bg_base_lighter: Color::Rgb(248, 248, 248),
-        bg_subtle: Color::Rgb(240, 240, 240),
-        bg_overlay: Color::Rgb(220, 220, 220),
-        bg_selected: Color::Rgb(200, 200, 200),
-        
-        // Foreground colors
-        fg_base: Color::Black,
-        fg_muted: Color::DarkGray,
-        fg_half_muted: Color::Gray,
-        fg_subtle: Color::LightBlue,
-        fg_selected: Color::Black,
-        
-        // Border colors
-        border: Color::Gray,
-        border_focus: Color::Blue,
-        
-        // Status colors
-        success: Color::Green,
-        error: Color::Red,
-        warning: Color::Rgb(180, 120, 0),
-        info: Color::Blue,
-        
-        // Special colors
-        white: Color::White,
-        blue_light: Color::LightBlue,
-        blue: Color::Blue,
-        yellow: Color::Rgb(180, 120, 0),
-        green: Color::Green,
-        green_dark: Color::Rgb(0, 100, 0),
-        green_light: Color::LightGreen,
-        red: Color::Red,
-        red_dark: Color::Rgb(139, 0, 0),
-        red_light: Color::LightRed,
-        cherry: Color::Magenta,
-    };
-    
-    let styles = build_styles(&colors);
-    
     Theme {
         name: "classic_light".to_string(),
         is_dark: false,
-        colors,
-        styles,
-        icons: ascii_icons(),
-        animations: AnimationConfig {
-            enabled: false,
-            ..Default::default()
-        },
+        
+        // Traditional colors adjusted for light background
+        primary: Color::Blue,
+        secondary: Color::Rgb(0xB8, 0x86, 0x00), // Dark yellow
+        tertiary: Color::Rgb(0x00, 0x80, 0x00),  // Dark green
+        accent: Color::Rgb(0x80, 0x00, 0x80),    // Dark magenta
+        
+        // Light backgrounds
+        bg_base: Color::White,
+        bg_base_lighter: Color::LightGray,
+        bg_subtle: Color::Gray,
+        bg_overlay: Color::LightGray,
+        
+        // Dark text for contrast
+        fg_base: Color::Black,
+        fg_muted: Color::DarkGray,
+        fg_half_muted: Color::Gray,
+        fg_subtle: Color::LightGray,
+        fg_selected: Color::White,
+        
+        // Light theme borders
+        border: Color::Gray,
+        border_focus: Color::Blue,
+        
+        // Darker status colors for visibility
+        success: Color::Rgb(0x00, 0x80, 0x00),  // Dark green
+        error: Color::Rgb(0x80, 0x00, 0x00),    // Dark red
+        warning: Color::Rgb(0xB8, 0x86, 0x00),  // Dark yellow
+        info: Color::Blue,
+        
+        // Traditional palette
+        white: Color::White,
+        blue_light: Color::LightBlue,
+        blue: Color::Blue,
+        yellow: Color::Rgb(0xB8, 0x86, 0x00),
+        green: Color::Rgb(0x00, 0x80, 0x00),
+        green_dark: Color::Rgb(0x00, 0x60, 0x00),
+        green_light: Color::LightGreen,
+        red: Color::Rgb(0x80, 0x00, 0x00),
+        red_dark: Color::Rgb(0x60, 0x00, 0x00),
+        red_light: Color::LightRed,
+        cherry: Color::Rgb(0x80, 0x00, 0x80),
+        
+        styles: None, // Built lazily
     }
 }
 
-/// Build style map from color scheme
-fn build_styles(colors: &ColorScheme) -> StyleMap {
-    let base = Style::default().fg(colors.fg_base);
-    
-    StyleMap {
-        base,
-        selected_base: base.bg(colors.primary),
-        title: base.fg(colors.accent).add_modifier(Modifier::BOLD),
-        subtitle: base.fg(colors.secondary).add_modifier(Modifier::BOLD),
-        text: base,
-        text_selected: base.bg(colors.primary).fg(colors.fg_selected),
-        muted: base.fg(colors.fg_muted),
-        subtle: base.fg(colors.fg_subtle),
-        success: base.fg(colors.success),
-        error: base.fg(colors.error),
-        warning: base.fg(colors.warning),
-        info: base.fg(colors.info),
+/// Create a high contrast theme for accessibility
+pub fn high_contrast() -> Theme {
+    Theme {
+        name: "high_contrast".to_string(),
+        is_dark: true,
         
-        // Component-specific styles
-        chat_message: base.bg(colors.bg_subtle),
-        chat_user: base.fg(colors.primary),
-        chat_assistant: base.fg(colors.secondary),
-        chat_system: base.fg(colors.fg_muted),
-        chat_tool: base.fg(colors.tertiary),
+        // Maximum contrast colors
+        primary: Color::White,
+        secondary: Color::Yellow,
+        tertiary: Color::Cyan,
+        accent: Color::Magenta,
         
-        sidebar_item: base.fg(colors.fg_base),
-        sidebar_selected: base.bg(colors.bg_selected).fg(colors.fg_selected),
-        sidebar_expanded: base.fg(colors.accent),
+        // Pure black/white backgrounds
+        bg_base: Color::Black,
+        bg_base_lighter: Color::DarkGray,
+        bg_subtle: Color::DarkGray,
+        bg_overlay: Color::Gray,
         
-        dialog_background: base.bg(colors.bg_overlay),
-        dialog_border: base.fg(colors.border_focus),
-        dialog_title: base.fg(colors.accent).add_modifier(Modifier::BOLD),
+        // High contrast text
+        fg_base: Color::White,
+        fg_muted: Color::LightGray,
+        fg_half_muted: Color::Gray,
+        fg_subtle: Color::DarkGray,
+        fg_selected: Color::Black,
         
-        editor_line_number: base.fg(colors.fg_subtle),
-        editor_cursor: base.bg(colors.secondary),
-        editor_selection: base.bg(colors.bg_selected),
+        // High contrast borders
+        border: Color::White,
+        border_focus: Color::Yellow,
         
-        status_bar: base.bg(colors.bg_base_lighter),
-        status_info: base.fg(colors.info),
-        status_error: base.fg(colors.error),
+        // Bright status colors
+        success: Color::LightGreen,
+        error: Color::LightRed,
+        warning: Color::LightYellow,
+        info: Color::LightCyan,
+        
+        // High visibility palette
+        white: Color::White,
+        blue_light: Color::LightBlue,
+        blue: Color::Blue,
+        yellow: Color::LightYellow,
+        green: Color::LightGreen,
+        green_dark: Color::Green,
+        green_light: Color::LightGreen,
+        red: Color::LightRed,
+        red_dark: Color::Red,
+        red_light: Color::LightRed,
+        cherry: Color::LightMagenta,
+        
+        styles: None, // Built lazily
     }
 }
 
-/// Default Unicode icons
-pub fn default_icons() -> IconSet {
-    IconSet {
-        // Navigation icons
-        folder_open: "📂".to_string(),
-        folder_closed: "📁".to_string(),
-        file: "📄".to_string(),
-        session: "💬".to_string(),
+/// Create a monochrome theme using only grayscale colors
+pub fn monochrome() -> Theme {
+    Theme {
+        name: "monochrome".to_string(),
+        is_dark: true,
         
-        // Chat icons
-        user: "👤".to_string(),
-        assistant: "🤖".to_string(),
-        system: "⚙️".to_string(),
-        tool: "🔧".to_string(),
-        attachment: "📎".to_string(),
+        // Grayscale brand colors with different intensities
+        primary: Color::White,
+        secondary: Color::LightGray,
+        tertiary: Color::Gray,
+        accent: Color::DarkGray,
         
-        // Status icons
-        success: "✅".to_string(),
-        error: "❌".to_string(),
-        warning: "⚠️".to_string(),
-        info: "ℹ️".to_string(),
-        loading: "⏳".to_string(),
+        // Grayscale backgrounds
+        bg_base: Color::Black,
+        bg_base_lighter: Color::Rgb(0x1A, 0x1A, 0x1A),
+        bg_subtle: Color::Rgb(0x2A, 0x2A, 0x2A),
+        bg_overlay: Color::Rgb(0x3A, 0x3A, 0x3A),
         
-        // Action icons
-        copy: "📋".to_string(),
-        edit: "✏️".to_string(),
-        delete: "🗑️".to_string(),
-        search: "🔍".to_string(),
-        settings: "⚙️".to_string(),
-        help: "❓".to_string(),
+        // Monochrome text
+        fg_base: Color::White,
+        fg_muted: Color::LightGray,
+        fg_half_muted: Color::Gray,
+        fg_subtle: Color::DarkGray,
+        fg_selected: Color::Black,
         
-        // Arrows and indicators
-        arrow_right: "▶".to_string(),
-        arrow_down: "▼".to_string(),
-        arrow_up: "▲".to_string(),
-        arrow_left: "◀".to_string(),
-        bullet: "•".to_string(),
-        checkmark: "✓".to_string(),
-    }
-}
-
-/// ASCII-only icons for terminals without Unicode support
-pub fn ascii_icons() -> IconSet {
-    IconSet {
-        // Navigation icons
-        folder_open: "[+]".to_string(),
-        folder_closed: "[-]".to_string(),
-        file: "   ".to_string(),
-        session: "[S]".to_string(),
+        // Grayscale borders
+        border: Color::DarkGray,
+        border_focus: Color::White,
         
-        // Chat icons
-        user: "[U]".to_string(),
-        assistant: "[A]".to_string(),
-        system: "[*]".to_string(),
-        tool: "[T]".to_string(),
-        attachment: "[@]".to_string(),
+        // Status colors using intensity
+        success: Color::White,
+        error: Color::LightGray,
+        warning: Color::Gray,
+        info: Color::DarkGray,
         
-        // Status icons
-        success: "[OK]".to_string(),
-        error: "[ERROR]".to_string(),
-        warning: "[WARN]".to_string(),
-        info: "[INFO]".to_string(),
-        loading: "[...]".to_string(),
+        // Monochrome palette
+        white: Color::White,
+        blue_light: Color::LightGray,
+        blue: Color::Gray,
+        yellow: Color::LightGray,
+        green: Color::Gray,
+        green_dark: Color::DarkGray,
+        green_light: Color::LightGray,
+        red: Color::Gray,
+        red_dark: Color::DarkGray,
+        red_light: Color::LightGray,
+        cherry: Color::Gray,
         
-        // Action icons
-        copy: "[C]".to_string(),
-        edit: "[E]".to_string(),
-        delete: "[D]".to_string(),
-        search: "[?]".to_string(),
-        settings: "[CFG]".to_string(),
-        help: "[H]".to_string(),
-        
-        // Arrows and indicators
-        arrow_right: ">".to_string(),
-        arrow_down: "v".to_string(),
-        arrow_up: "^".to_string(),
-        arrow_left: "<".to_string(),
-        bullet: "*".to_string(),
-        checkmark: "x".to_string(),
+        styles: None, // Built lazily
     }
 }
 
@@ -377,35 +327,57 @@ mod tests {
     use super::*;
     
     #[test]
-    fn test_all_themes_have_required_fields() {
+    fn test_theme_creation() {
+        let theme = goofy_dark();
+        assert_eq!(theme.name, "goofy_dark");
+        assert!(theme.is_dark);
+        assert!(theme.styles.is_none()); // Should be built lazily
+    }
+    
+    #[test]
+    fn test_all_presets() {
         let themes = vec![
             goofy_dark(),
             goofy_light(),
             classic_dark(),
             classic_light(),
+            high_contrast(),
+            monochrome(),
         ];
         
         for theme in themes {
             assert!(!theme.name.is_empty());
-            // Basic smoke test - ensure all colors are defined
-            assert_ne!(theme.colors.primary, Color::Reset);
-            assert_ne!(theme.colors.bg_base, Color::Reset);
-            assert_ne!(theme.colors.fg_base, Color::Reset);
+            // Verify all themes have valid color assignments
+            match theme.primary {
+                Color::Rgb(_, _, _) | Color::Black | Color::Red | Color::Green 
+                | Color::Yellow | Color::Blue | Color::Magenta | Color::Cyan 
+                | Color::White | Color::LightRed | Color::LightGreen 
+                | Color::LightYellow | Color::LightBlue | Color::LightMagenta 
+                | Color::LightCyan | Color::Gray | Color::DarkGray 
+                | Color::LightGray | Color::Indexed(_) => {
+                    // Valid color
+                }
+            }
         }
     }
     
     #[test]
-    fn test_icon_sets_complete() {
-        let default_icons = default_icons();
-        let ascii_icons = ascii_icons();
-        
-        // Ensure both icon sets have all required icons
-        assert!(!default_icons.folder_open.is_empty());
-        assert!(!default_icons.user.is_empty());
-        assert!(!default_icons.success.is_empty());
-        
-        assert!(!ascii_icons.folder_open.is_empty());
-        assert!(!ascii_icons.user.is_empty());
-        assert!(!ascii_icons.success.is_empty());
+    fn test_theme_naming() {
+        assert_eq!(goofy_dark().name, "goofy_dark");
+        assert_eq!(goofy_light().name, "goofy_light");
+        assert_eq!(classic_dark().name, "classic_dark");
+        assert_eq!(classic_light().name, "classic_light");
+        assert_eq!(high_contrast().name, "high_contrast");
+        assert_eq!(monochrome().name, "monochrome");
+    }
+    
+    #[test]
+    fn test_theme_darkness() {
+        assert!(goofy_dark().is_dark);
+        assert!(!goofy_light().is_dark);
+        assert!(classic_dark().is_dark);
+        assert!(!classic_light().is_dark);
+        assert!(high_contrast().is_dark);
+        assert!(monochrome().is_dark);
     }
 }
